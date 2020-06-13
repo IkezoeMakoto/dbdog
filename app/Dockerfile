@@ -13,4 +13,4 @@ RUN apk update && \
 WORKDIR /app
 COPY . /app
 
-CMD make build
+CMD make -C src build

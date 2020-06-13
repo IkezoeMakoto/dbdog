@@ -4,15 +4,27 @@ import (
 	"database/sql"
 	"github.com/IkezoeMakoto/dbdog/app/src/database"
 	"github.com/IkezoeMakoto/dbdog/app/src/services"
+	"os"
 
+	"github.com/joho/godotenv"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
 	services.PrintLogo()
 
-	// todo: dotenvから読み込む
-	d := database.NewDsn("127.0.0.1", "3306", "dbdog", "test", "testdb")
+	err := godotenv.Load()
+	if err != nil {
+		panic("failed to load .env")
+	}
+
+	d := database.NewDsn(
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASS"),
+		os.Getenv("DB_NAME"),
+	)
 	db, err := sql.Open("mysql", d.ToString())
 	if err != nil {
 		panic(err.Error())
