@@ -2,20 +2,17 @@ package scheme
 
 import (
 	"database/sql"
+	"fmt"
 )
 
 type Desc struct {
-	Field sql.NullString
-	Type sql.NullString
-	Null sql.NullString
-	Key sql.NullString
+	Field   sql.NullString
+	Type    sql.NullString
+	Null    sql.NullString
+	Key     sql.NullString
 	Default sql.NullString
-	Extra sql.NullString
+	Extra   sql.NullString
 }
-
-// func NewDesc(f, t, n, k, d, e) *Desc {
-// 	return &Desc{f, t, n, k, d, e}
-// }
 
 func (s Desc) ToString() string {
 	return "Field:" + s.Field.String +
@@ -24,4 +21,8 @@ func (s Desc) ToString() string {
 		" Key:" + s.Key.String +
 		" Default:" + s.Default.String +
 		" Extra:" + s.Extra.String
+}
+
+func (s Desc) Print() {
+	fmt.Println(s.ToString())
 }

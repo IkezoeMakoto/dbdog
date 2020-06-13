@@ -13,5 +13,5 @@ func NewDsn(h string, port string, u string, pass string, n string) *Dsn {
 }
 
 func (d Dsn) ToString() string {
-	return 	d.User + ":" + d.Pass + "@tcp(" + d.Host + ":" + d.Port + ")/" + d.Name + "?charset=utf8&parseTime=True&loc=Local"
+	return d.User + ":" + d.Pass + "@tcp(" + d.Host + ":" + d.Port + ")/" + d.Name + "?charset=utf8&parseTime=True&loc=Local"
 }
