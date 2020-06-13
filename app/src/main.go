@@ -3,34 +3,17 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"github.com/IkezoeMakoto/dbdog/app/src/database"
+	"github.com/IkezoeMakoto/dbdog/app/src/scheme"
 
 	_ "github.com/go-sql-driver/mysql"
 )
-
-type Dsn struct {
-	Host string
-	Port string
-	User string
-	Pass string
-	Name string
-}
-
-// todo: ファイル切り出す
-func (d *Dsn) ToString() string {
-	return 	d.User + ":" + d.Pass + "@tcp(" + d.Host + ":" + d.Port + ")/" + d.Name + "?charset=utf8&parseTime=True&loc=Local"
-}
 
 func main() {
 	fmt.Println("hello World!")
 
 	// todo: dotenvから読み込む
-	d := Dsn{
-		"127.0.0.1",
-		"3306",
-		"dbdog",
-		"test",
-		"testdb",
-	}
+	d := database.NewDsn("127.0.0.1", "3306", "dbdog", "test", "testdb")
 	db, err := sql.Open("mysql", d.ToString())
 	if err != nil {
 		panic(err.Error())
@@ -42,28 +25,28 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
-	var names []string
+	var tables []*scheme.Table
 	for rows.Next() {
 		name := ""
 		err := rows.Scan(&name)
 		if err != nil {
 			fmt.Println(err)
 		}
-		names = append(names, name)
+		tables = append(tables, scheme.NewTable(name))
 		fmt.Println("--- " + name + " ---")
 		// テーブル詳細取得
-		var dbField,dbType,dbNull,dbKey,dbDefault,dbExtra sql.NullString
+		var desc scheme.Desc
 		rows, err := db.Query("DESCRIBE " + name)
 		if err != nil {
 			fmt.Println(err)
 		}
 		defer rows.Close()
 		for rows.Next() {
-			err := rows.Scan(&dbField, &dbType, &dbNull, &dbKey, &dbDefault, &dbExtra)
+			err := rows.Scan(&desc.Field, &desc.Type, &desc.Null, &desc.Key, &desc.Default, &desc.Extra)
 			if err != nil {
 				fmt.Println(err)
 			}
-			fmt.Println(dbField, dbType, dbNull, dbKey, dbDefault, dbExtra)
+			fmt.Println(desc.ToString())
 		}
 	}
 }
