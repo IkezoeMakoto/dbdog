@@ -15,11 +15,11 @@ type Desc struct {
 }
 
 type DescDetail struct {
-	Key     string
-	Value   string
+	Key   string
+	Value string
 }
 type DescDetails struct {
-	List    []DescDetail
+	List []DescDetail
 }
 
 func (s Desc) ToString() string {

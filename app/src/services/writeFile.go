@@ -6,17 +6,17 @@ import (
 )
 
 type WriteFile struct {
-	ts scheme.Tables
-	fn string
-	md  []string
+	ts   scheme.Tables
+	fn   string
+	md   []string
 	html []string
 }
 
 func NewWriteFile(ts scheme.Tables, fn string) *WriteFile {
 	return &WriteFile{
-		ts: ts,
-		fn: fn,
-		md: []string{},
+		ts:   ts,
+		fn:   fn,
+		md:   []string{},
 		html: []string{},
 	}
 }
@@ -26,7 +26,7 @@ func (wf *WriteFile) OutputMarkDown() error {
 	wf.md = append(wf.md, "# DBdog")
 	for _, t := range wf.ts.List {
 		// h2 table
-		wf.md = append(wf.md, "## " + t.Name)
+		wf.md = append(wf.md, "## "+t.Name)
 
 		// table-header keys
 		header := "|"
