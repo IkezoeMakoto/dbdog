@@ -33,9 +33,7 @@ func main() {
 
 	ts := services.GetDescribe(db)
 
-	// todo: env から出力モード見て出力方法変える
-	// txt, html, csv, puml
-	for _, t := range ts {
-		t.Print()
-	}
+	ts.Print()
+	wf := services.NewWriteFile(ts, "dbdog.txt")
+	wf.OutputMarkDown()
 }

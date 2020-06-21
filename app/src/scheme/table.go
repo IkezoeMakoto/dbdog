@@ -38,3 +38,14 @@ func (t *Table) Print() {
 	}
 	fmt.Println("\n")
 }
+
+func (t *Table) DescKeys() []string {
+	return []string{
+		"Field",
+		"Type",
+		"Null",
+		"Key",
+		"Default",
+		"Extra",
+	}
+}

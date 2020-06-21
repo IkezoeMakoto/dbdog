@@ -14,6 +14,14 @@ type Desc struct {
 	Extra   sql.NullString
 }
 
+type DescDetail struct {
+	Key     string
+	Value   string
+}
+type DescDetails struct {
+	List    []DescDetail
+}
+
 func (s Desc) ToString() string {
 	return "Field:" + s.Field.String +
 		" Type:" + s.Type.String +
@@ -25,4 +33,17 @@ func (s Desc) ToString() string {
 
 func (s Desc) Print() {
 	fmt.Println(s.ToString())
+}
+
+func (s Desc) ToDescDetails() DescDetails {
+	return DescDetails{
+		List: []DescDetail{
+			{Key: "Field", Value: s.Field.String},
+			{Key: "Type", Value: s.Type.String},
+			{Key: "Null", Value: s.Null.String},
+			{Key: "Key", Value: s.Key.String},
+			{Key: "Default", Value: s.Default.String},
+			{Key: "Extra", Value: s.Extra.String},
+		},
+	}
 }
