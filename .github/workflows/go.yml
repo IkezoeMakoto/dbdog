@@ -23,4 +23,4 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build
-      run: make -C app/src/build
+      run: make -C app/src build
