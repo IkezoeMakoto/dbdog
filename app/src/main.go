@@ -4,26 +4,37 @@ import (
 	"database/sql"
 	"github.com/IkezoeMakoto/dbdog/app/src/database"
 	"github.com/IkezoeMakoto/dbdog/app/src/services"
-	"os"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/joho/godotenv"
+	"github.com/BurntSushi/toml"
 )
+
+type Config struct {
+	Db  Db
+}
+
+type Db struct {
+	Host    string `toml:host`
+	Port    string `toml:port`
+	User    string `toml:user`
+	Pass    string `toml:pass`
+	Name    string `toml:name`
+}
 
 func main() {
 	services.PrintLogo()
 
-	err := godotenv.Load()
-	if err != nil {
-		panic("failed to load .env")
+	var c Config
+	if _, err := toml.DecodeFile("config.toml", &c); err != nil {
+		panic("error config.toml unload")
 	}
 
 	d := database.NewDsn(
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASS"),
-		os.Getenv("DB_NAME"),
+		c.Db.Host,
+		c.Db.Port,
+		c.Db.User,
+		c.Db.Pass,
+		c.Db.Name,
 	)
 	db, err := sql.Open("mysql", d.ToString())
 	if err != nil {

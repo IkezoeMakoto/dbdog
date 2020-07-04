@@ -78,7 +78,7 @@ jobs:
           goarch: ${{ matrix.arch }}
         run: |
           mkdir -p app/dist
-          cp README.md app/dist/ && cp .env.example app/dist/
+          cp README.md app/dist/ && cp config.toml app/dist/
           cd app/src/ && GOOS=$goos GOARCH=$goarch go build -v -o ../dist/dbdog main.go
           cd ../ && zip -j -r release dist
 
