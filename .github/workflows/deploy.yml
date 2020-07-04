@@ -43,6 +43,7 @@ jobs:
         run: |
           mkdir artifact
           echo $url > artifact/url.txt
+
       - name: Upload artifact to share url with other jobs
         uses: actions/upload-artifact@v1
         with:
@@ -68,15 +69,19 @@ jobs:
             arch: amd64
 
     steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v1
+
       - name: Build
         env:
           goos: ${{ matrix.goos }}
           goarch: ${{ matrix.arch }}
         run: |
-          mkdir dist
-          cp README.md dist/ && cp .env.example dist/
-          GOOS=$goos GOARCH=$goarch go build -v -o dist/dbdog app/src/main.go
-          zip -j -r release dist
+          mkdir -p app/dist
+          cp README.md app/dist/ && cp .env.example app/dist/
+          cd app/src/ && GOOS=$goos GOARCH=$goarch go build -v -o ../dist/dbdog main.go
+          cd ../ && zip -j -r release dist
+
       - name: Download artifact to get url to upload to release
         uses: actions/download-artifact@v1
         with:
@@ -87,12 +92,13 @@ jobs:
         run: |
           url=$(cat artifact/url.txt)
           echo "##[set-output name=upload_url;]$url"
+
       - name: Upload release asset
         uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.get_url.outputs.upload_url }}
-          asset_path: release.zip
+          asset_path: app/release.zip
           asset_name: release-${{ matrix.os }}.zip
           asset_content_type: application/zip
