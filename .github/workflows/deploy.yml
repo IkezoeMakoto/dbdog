@@ -77,10 +77,9 @@ jobs:
           goos: ${{ matrix.goos }}
           goarch: ${{ matrix.arch }}
         run: |
-          mkdir -p app/dist
+          GOOS=$goos GOARCH=$goarch make build
           cp README.md app/dist/ && cp config.toml app/dist/
-          cd app/src/ && GOOS=$goos GOARCH=$goarch go build -v -o ../dist/dbdog main.go
-          cd ../ && zip -j -r release dist
+          zip -j -r release dist
 
       - name: Download artifact to get url to upload to release
         uses: actions/download-artifact@v1
@@ -99,6 +98,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.get_url.outputs.upload_url }}
-          asset_path: app/release.zip
+          asset_path: release.zip
           asset_name: release-${{ matrix.os }}.zip
           asset_content_type: application/zip

@@ -1,8 +1,15 @@
-build:
-	docker-compose up -d app
+DIST=dist
+$(DIST):
+	mkdir -p $(DIST)
+
+build: $(DIST)
+	go build -o $(DIST)/dbdog main.go
 .PHONY: build
 
-APP=./app/bin/dbdog
-up:
-	$(APP)
-.PHONY:up
+fmt:
+	go fmt ./...
+.PHONY: fmt
+
+run:
+	go run main.go
+.PHONY: run

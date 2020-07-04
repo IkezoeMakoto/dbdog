@@ -2,23 +2,23 @@ package main
 
 import (
 	"database/sql"
-	"github.com/IkezoeMakoto/dbdog/app/src/database"
-	"github.com/IkezoeMakoto/dbdog/app/src/services"
+	"github.com/IkezoeMakoto/dbdog/database"
+	"github.com/IkezoeMakoto/dbdog/services"
 
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/BurntSushi/toml"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type Config struct {
-	Db  Db
+	Db Db
 }
 
 type Db struct {
-	Host    string `toml:host`
-	Port    string `toml:port`
-	User    string `toml:user`
-	Pass    string `toml:pass`
-	Name    string `toml:name`
+	Host string `toml:host`
+	Port string `toml:port`
+	User string `toml:user`
+	Pass string `toml:pass`
+	Name string `toml:name`
 }
 
 func main() {
