@@ -74,8 +74,8 @@ jobs:
           goarch: ${{ matrix.arch }}
         run: |
           mkdir dist
-          cp test.txt dist/
-          GOOS=$goos GOARCH=$goarch go build -v -o dist/app .
+          cp README.md dist/ && cp .env.example dist/
+          GOOS=$goos GOARCH=$goarch go build -v -o dist/dbdog app/src/main.go
           zip -j -r release dist
       - name: Download artifact to get url to upload to release
         uses: actions/download-artifact@v1
