@@ -43,6 +43,7 @@ jobs:
         run: |
           mkdir artifact
           echo $url > artifact/url.txt
+
       - name: Upload artifact to share url with other jobs
         uses: actions/upload-artifact@v1
         with:
@@ -79,7 +80,8 @@ jobs:
           mkdir -p app/dist
           cp README.md app/dist/ && cp .env.example app/dist/
           cd app/src/ && GOOS=$goos GOARCH=$goarch go build -v -o ../dist/dbdog main.go
-          zip -j -r release dist
+          cd ../ && zip -j -r release dist
+
       - name: Download artifact to get url to upload to release
         uses: actions/download-artifact@v1
         with:
@@ -90,6 +92,7 @@ jobs:
         run: |
           url=$(cat artifact/url.txt)
           echo "##[set-output name=upload_url;]$url"
+
       - name: Upload release asset
         uses: actions/upload-release-asset@v1.0.1
         env:
