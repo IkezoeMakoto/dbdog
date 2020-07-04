@@ -2,8 +2,8 @@ name: deploy
 
 on:
   push:
-    tags:
-      - v*
+#    tags:
+#      - v*
 
 jobs:
   test:
@@ -74,6 +74,8 @@ jobs:
           goarch: ${{ matrix.arch }}
         run: |
           mkdir dist
+          pwd
+          ls -al
           cp README.md dist/ && cp .env.example dist/
           GOOS=$goos GOARCH=$goarch go build -v -o dist/dbdog app/src/main.go
           zip -j -r release dist
