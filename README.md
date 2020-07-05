@@ -11,8 +11,9 @@ go get -u github.com/IkezoeMakoto/dbdog
 ```
 or
 binary download
+Please execute the following command after downloading the latest version
+https://github.com/IkezoeMakoto/dbdog/releases
 ```
-wget "https://github.com/IkezoeMakoto/dbdog/releases/download/v0.0.2/dbdog_$(uname -s)-$(uname -m).zip"
 unzip dbdog_linux_amd64.zip
 mv dbdog /usr/local/bin
 ```
